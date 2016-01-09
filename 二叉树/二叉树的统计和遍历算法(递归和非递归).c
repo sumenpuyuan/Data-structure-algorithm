@@ -5,6 +5,7 @@
 #include<conio.h>
 #include<math.h>
 #define N 100
+#define MAXSIZE 1000
 typedef char elemtype;
 typedef struct BiTreeNode
 {
@@ -13,6 +14,75 @@ typedef struct BiTreeNode
 	char flag;
 
 }BiTreeNode,*BiTree;
+typedef struct SequenQueue
+{
+    //int data[MAXSIZE];
+    BiTree data[MAXSIZE];//存储指针
+    int front1;//头指针
+    int rear;//尾指真
+}SequenQueue;
+//初始化
+SequenQueue* Init_SequenQueue()
+{
+    SequenQueue *Q;
+    Q=(SequenQueue*)malloc(sizeof(SequenQueue));
+    Q->front1=0;
+    Q->rear=0;
+    return Q;//返回循环队列的首地址
+}
+//队列是否为空
+int SequenQueue_Empty(SequenQueue* Q)
+{
+    if(Q->front1==Q->rear)
+        return 1;//队列为空，返回1
+    else
+        return 0;
+}
+//判断队列是否满了
+int SequenQueue_Full(SequenQueue *q)
+{
+    if((q->rear+1)%MAXSIZE==q->front1)
+        return 1;//如果相等，则队列已经满了
+    else
+        return 0;
+
+}
+//球循环队列的长度
+int SequenQueue_Length(SequenQueue *q)
+{
+    return (q->rear-q->front1);
+}
+//入队
+int Enter_SequenQueue(SequenQueue*q,BiTree x)
+{
+    if(SequenQueue_Full(q))
+    {
+        printf("队列已满");
+        return 0;//入队失败，返回0
+    }
+    else{
+        q->data[q->rear]=x;
+        q->rear=(q->rear+1)%MAXSIZE;
+        return 1;
+    }
+
+
+}
+//出兑
+int Delete_SequenQueue(SequenQueue *q,BiTree *x)
+{
+    if(q->front1==q->rear)
+    {
+        printf("队列为空");
+        return 0;
+    }
+    else
+    {
+        *x=q->data[q->front1];
+        q->front1=(q->front1+1)%MAXSIZE;
+        return 1;
+    }
+}
 int  InOrderNo(BiTree bt);
 void visit(char data);
 //结合扩展先序遍历序列
@@ -251,7 +321,33 @@ int  InOrderNo02(BiTree bt)
 	while(p!=NULL || top!=-1);
 
 }
-
+void layer(BiTree bt)
+{
+    SequenQueue *q;
+    BiTree temp;
+    if(bt == NULL)
+    {
+        printf("树为空\n");
+        return 0;
+    }
+    else
+    {
+        q=Init_SequenQueue();
+        Enter_SequenQueue(q,bt);
+        while(!SequenQueue_Empty(q))
+        {
+            Delete_SequenQueue(q,&temp);
+            printf("%6c",temp->data);
+            if(temp->lchild !=NULL )
+                Enter_SequenQueue(q,temp->lchild);
+            if(temp->rchild != NULL)
+                Enter_SequenQueue(q,temp->rchild);
+            if(SequenQueue_Empty(q))
+                return 0;
+            else;
+        }
+    }
+}
 void menu()
 {
 	int key;
@@ -278,6 +374,7 @@ void menu()
 		puts("9中序非递归输出节点数据");
 		puts("10先序非递归输出节点数据");
 		puts("11二叉树深度");
+		puts("12非递归层次遍历");
 		//puts("9先序非递归输出节点数据");
 		scanf("%d",&key);
 		switch(key)
@@ -298,6 +395,7 @@ void menu()
 		case 11:depth=BitreeDepth(bt);
             printf("深度为%d\n",depth);
 		getch();break;
+		case 12:layer(bt);getch();break;
 		default:break;
 		}
 	}
