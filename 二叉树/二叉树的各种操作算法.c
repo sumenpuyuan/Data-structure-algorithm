@@ -1,4 +1,3 @@
-//blog：http://sumenpuyuan.com/2015/12/08/%E4%BA%8C%E5%8F%89%E6%A0%91%E7%9A%84%E9%81%8D%E5%8E%86%E5%92%8C%E7%BB%9F%E8%AE%A1%E7%AE%97%E6%B3%95/2/
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
@@ -348,6 +347,54 @@ void layer(BiTree bt)
         }
     }
 }
+void layer02(BiTree bt)
+{
+    SequenQueue *q;
+    BiTree temp,temp02;
+    if(bt == NULL)
+    {
+        printf("树为空\n");
+        return 0;
+    }
+    else
+    {
+        q=Init_SequenQueue();
+        Enter_SequenQueue(q,bt);
+        while(!SequenQueue_Empty(q))
+        {
+            Delete_SequenQueue(q,&temp);
+           // printf("%6c",temp->data);
+            if(temp->lchild !=NULL )
+                Enter_SequenQueue(q,temp->lchild);
+            if(temp->rchild != NULL)
+                Enter_SequenQueue(q,temp->rchild);
+            if(temp->rchild !=NULL || temp->lchild!=NULL)
+            {
+                temp02=temp->lchild;
+                temp->lchild=temp->rchild;
+                temp->rchild=temp02;
+            }
+            if(SequenQueue_Empty(q))
+                return 0;
+            else;
+        }
+    }
+}
+void Mirror(BiTree bt)
+{
+    BiTree temp;
+    if(bt == NULL)
+        return 1;
+    if((bt->lchild == NULL) && (bt->rchild ==NULL))
+        return ;
+    temp=bt->lchild;
+    bt->lchild=bt->rchild;
+    bt->rchild=temp;
+    Mirror(bt->lchild);
+    Mirror(bt->rchild);
+
+
+}
 void menu()
 {
 	int key;
@@ -375,6 +422,8 @@ void menu()
 		puts("10先序非递归输出节点数据");
 		puts("11二叉树深度");
 		puts("12非递归层次遍历");
+		puts("13反转二叉树");
+		puts("14非递归反转二叉树");
 		//puts("9先序非递归输出节点数据");
 		scanf("%d",&key);
 		switch(key)
@@ -396,6 +445,8 @@ void menu()
             printf("深度为%d\n",depth);
 		getch();break;
 		case 12:layer(bt);getch();break;
+		case 13:Mirror(bt);getch();break;
+		case 14:layer02(bt);getch();break;
 		default:break;
 		}
 	}
@@ -404,3 +455,4 @@ int main()
 {
 	menu();
 }
+
