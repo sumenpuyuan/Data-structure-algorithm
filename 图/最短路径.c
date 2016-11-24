@@ -137,7 +137,7 @@ void CreateMGraph(MGraph *G)
     for(i=0;i<G->n;i++)
         for(j=0;j<G->n;j++)
             G->edges[i][j]=INF;//初始化邻接矩阵
-    printf("请输入每条边对应的两个顶点的序号(输入格式为)，起始顶点<空格>终止定点<空格>权值<回车>\n");
+    printf("请输入每条边对应的两个顶点的序号(输入格式为)，起始顶点 逗号 终止定点 逗号 权值<回车>\n");
     printf("边数为%d\n",G->e);
     for(k=0;k<G->e;k++)
     {
