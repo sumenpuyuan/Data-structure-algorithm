@@ -1,0 +1,113 @@
+import java.util.Scanner;
+
+
+
+public class Fahter{
+	public static void main(String[] args){
+		money money=new money();
+		money.Input();
+	}
+}
+class money {
+	Scanner in;
+	double money,dTemp;
+	int iTemp;
+	int num[];
+	int xiao[];
+	String han[]={"","十","百","千","万"};
+	String zi[]={"","一","二","三","四","五","六","七","八","九"};
+	String z[]={"角","分"};
+	public money(){
+		in=new Scanner(System.in);
+		num=new int[20];
+		xiao=new int[20];
+	}
+	public void Input(){
+		money=in.nextDouble();
+		//temp=money;
+		int ii=0;
+		//System.out.println("123");
+		//是不是整数
+		if((int)money == money){
+			//是整数
+			//肯定要主位区属
+			iTemp=(int)money;
+			if(iTemp == 10){
+				System.out.print("十元整");
+			}
+			else{
+				while(iTemp != 0){
+					num[ii]=iTemp%10;
+					ii++;
+					iTemp/=10;
+				}
+				//拿到数据了 怎么判断连续的的0
+				for(int ij=ii-1;ij>=0;ij--){
+					if(num[ij] == 0 && ij-1>=0 && num[ij-1] !=0){
+						System.out.print("零");
+					}
+					else if(num[ij] == 0 && ij-1>=0 && num[ij-1] ==0){
+						
+					}
+					else
+						System.out.print(zi[num[ij]]+han[ij]);
+				}
+				System.out.print("元整");
+			}
+			
+		}
+		else{
+			//这里应该是小数部分
+			//先把整数弄好
+			iTemp=(int)money;
+			if(iTemp == 10){
+				System.out.print("十元");
+			}else{
+				while(iTemp !=0){
+					num[ii]=iTemp%10;
+					iTemp/=10;
+					ii++;
+				}
+				//拿到数据了 怎么判断连续的的0
+				for(int ij=ii-1;ij>=0;ij--){
+					if(num[ij] == 0 && ij-1>=0 && num[ij-1] !=0){
+						System.out.print("零");
+					}
+					else if(num[ij] == 0 && ij-1>=0 && num[ij-1] ==0){
+						
+					}
+					else
+						System.out.print(zi[num[ij]]+han[ij]);
+				}
+				System.out.print("元");
+			}
+			
+			//再弄小数部分
+			ii=0;
+			dTemp=money-(int)money;
+			dTemp=Double.parseDouble(String.format("%.2f",dTemp));
+		//	System.out.println("dtemp"+dTemp);
+			dTemp=dTemp*10;
+			int temp=(int)dTemp;
+		//	System.out.println("dtemp"+dTemp+"temp"+temp);
+			//只要小数部分部委空
+			while(temp !=0){
+				//System.out.println(ii);
+				xiao[ii]=temp;
+				//System.out.println("ii="+ii+"xiao[ii]="+xiao[ii]);
+				dTemp=(dTemp-temp)*10;
+				temp=(int)dTemp;
+				ii++;
+				//System.out.println("dtemp"+dTemp+"temp"+temp);
+				if(dTemp - temp == 0)
+				{
+					xiao[ii]=temp;
+				}
+			}
+		//	System.out.println("ii="+ii+"  "+xiao[0]);
+			for(int ij=0;ij<ii;ij++){
+				System.out.print(zi[xiao[ij]]+z[ij]);
+			}
+		}
+	}
+}
